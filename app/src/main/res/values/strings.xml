@@ -1,0 +1,57 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Story App</string>
+    <string name="app_sub">Create Your Story now</string>
+    <bool name="app_debug_mode" translatable="false">false</bool>
+
+    <string name="password">Password</string>
+    <string name="message_hint_password">Input your Password</string>
+    <string name="message_to_short_password">Your Password is to Short</string>
+
+    <string name="email">Email</string>
+    <string name="message_hint_email">Input your Email</string>
+    <string name="message_invalid_email">Your Email is Invalid</string>
+
+    <string name="name">Name</string>
+    <string name="message_hint_name">Input your Name</string>
+
+    <string name="login">Login</string>
+    <string name="or">Or</string>
+    <string name="registration">Registration</string>
+    <string name="registration_sub">Registration Your Account, and create Your Story</string>
+
+    <string name="message_registration">Didn\'t Have Account ? [Registration] now</string>
+    <string name="message_login">I Have Account, [Login] now</string>
+
+    <string name="back">Back</string>
+    <string name="submit">Add Your Story Now</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
+    <string name="ok">OK</string>
+
+    <string name="message_add_image">[Click Image] for [Add Image] or [Change Image]</string>
+
+    <string name="message_no_title_network">No Internet Connection</string>
+    <string name="message_no_network">It looks like your device is having problems with the Internet</string>
+    <string name="message_error_title_general">Sorry, an error occurred</string>
+    <string name="message_error_general">Keep calm, We do our best for you, and We\'ll be back soon</string>
+    <string name="message_error_network">[%s] %s, Hit Time in %s</string>
+    <string name="message_error_something_wrong">There is an error</string>
+
+    <string name="label_plus_two_string" translatable="false">%s %s</string>
+    <string name="label_plus_two_string_enter" translatable="false">%s\n%s</string>
+    <string name="label_plus_two_string_regex_first" translatable="false">[%s] %s</string>
+    <string name="label_plus_two_string_regex_second" translatable="false">%s [%s]</string>
+
+    <string name="notification_error_title">Error</string>
+    <string name="notification_warning_title">Warning</string>
+    <string name="notification_information_title">Information</string>
+    <string name="notification_success_title">Success</string>
+
+    <string name="this_field">This Field</string>
+    <string name="message_error_empty">%s must fill, Cannot be Empty</string>
+
+    <string name="message_success_registration">You have Successfully Registered, Please Login to validate Your Account</string>
+    <string name="message_loading">Please wait…</string>
+    <string name="message_loading_registration">[Please wait]\We are currently [Registering Your Account]</string>
+    <string name="message_loading_login">[Please wait]\nWe are [looking for], [Your Credential] data</string>
+</resources>

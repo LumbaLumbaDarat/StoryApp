@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_default">20dp</dimen>
+    <dimen name="padding_half_default">10dp</dimen>
+    <dimen name="padding_half_half_default">5dp</dimen>
+    <dimen name="padding_multiple_default">40dp</dimen>
+
+    <dimen name="image_size_default">200dp</dimen>
+    <dimen name="image_size_half_default">100dp</dimen>
+
+    <dimen name="round_default">5dp</dimen>
+
+    <dimen name="margin_default">20dp</dimen>
+    <dimen name="margin_half_default">10dp</dimen>
+    <dimen name="margin_half_half_default">5dp</dimen>
+    <dimen name="margin_multiple_default">40dp</dimen>
+    <dimen name="margin_multiple_add_default">50dp</dimen>
+    <dimen name="margin_multiple_multiple_add_default">100dp</dimen>
+
+    <dimen name="text_smallest">10sp</dimen>
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="text_almost_big">16sp</dimen>
+    <dimen name="text_big">18sp</dimen>
+    <dimen name="text_bigger">22sp</dimen>
+    <dimen name="text_biggest">24sp</dimen>
+
+    <dimen name="height_default">48dp</dimen>
+</resources>

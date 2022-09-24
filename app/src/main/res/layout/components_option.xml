@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_default">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_multiple_add_default"
+        android:paddingVertical="@dimen/padding_default"
+        android:background="@drawable/frame_background_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_multiple_default"
+            android:layout_marginHorizontal="@dimen/margin_default"
+            android:fontFamily="@font/oxygen_bold"
+            android:textSize="@dimen/text_big"
+            android:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tv_message_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_half_default"
+            android:layout_marginHorizontal="@dimen/margin_default"
+            android:text="@string/app_sub" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_negative"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_default"
+                android:layout_marginEnd="@dimen/margin_half_half_default"
+                android:text="@string/cancel"
+                app:cornerRadius="@dimen/round_default" />
+
+            <Button
+                android:id="@+id/btn_positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_half_half_default"
+                android:layout_marginEnd="@dimen/margin_default"
+                android:text="@string/ok"
+                app:cornerRadius="@dimen/round_default" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lt_option"
+        android:layout_width="@dimen/image_size_half_default"
+        android:layout_height="@dimen/image_size_half_default"
+        android:layout_marginEnd="@dimen/margin_half_default"
+        android:layout_gravity="top|end"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="question.json"
+        app:lottie_loop="true"
+        app:lottie_speed="1" />
+</FrameLayout>
