@@ -20,7 +20,7 @@ class DataResource<T>(
 class ApiResource<T>(
     val responseStatus: ResponseStatus,
     val body: T,
-    val generalResponse: GeneralResponse??
+    val generalResponse: GeneralResponse?
 ) {
     companion object {
         fun <T> success(body: T): ApiResource<T> = ApiResource(SUCCESS, body, null)

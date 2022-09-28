@@ -42,20 +42,9 @@ class ConnectionErrorActivity : AppCompatActivity() {
                         GENERAL_RESPONSE
                     )
 
-                if (resources.getBoolean(R.bool.app_debug_mode)) {
-                    with(binding)
-                    {
-
-                        with(binding) {
-                            tvTitleMessage.text = getString(R.string.message_error_title_general)
-                            tvMessage.text = generalResponse?.message
-                        }
-                    }
-                } else {
-                    with(binding) {
-                        tvTitleMessage.text = getString(R.string.message_error_title_general)
-                        tvMessage.text = getString(R.string.message_error_general)
-                    }
+                with(binding) {
+                    tvTitleMessage.text = getString(R.string.message_error_title_general)
+                    tvMessage.text = generalResponse?.message
                 }
             }
             else -> {}

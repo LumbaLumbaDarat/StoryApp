@@ -7,7 +7,7 @@
     tools:context=".module.story.addstory.AddStoryActivity">
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/app_bar"
         layout="@layout/components_app_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include">
+        app:layout_constraintTop_toBottomOf="@+id/app_bar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,8 +37,9 @@
                 android:id="@+id/iv_add_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/image_size_default"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/default_wait_image" />
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/default_add_image" />
 
             <TextView
                 android:id="@+id/tv_message_add_image"
@@ -55,6 +56,7 @@
                 android:id="@+id/ed_add_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/padding_half_default"
                 android:background="@drawable/frame_background_secondary"
                 android:layout_margin="@dimen/margin_default"
                 android:minLines="10"

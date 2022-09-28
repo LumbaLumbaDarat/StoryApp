@@ -6,7 +6,9 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -16,8 +18,12 @@ import com.harifrizki.storyapp.components.*
 import com.harifrizki.storyapp.components.AppBar.Companion.USE_ONLY_TITLE
 import com.harifrizki.storyapp.data.remote.response.GeneralResponse
 import com.harifrizki.storyapp.databinding.ComponentsAppBarBinding
+import com.harifrizki.storyapp.databinding.ComponentsDetailStoryBinding
 import com.harifrizki.storyapp.databinding.ComponentsEmptyDataBinding
+import com.harifrizki.storyapp.model.Menu
 import com.harifrizki.storyapp.utils.ErrorState
+import com.harifrizki.storyapp.utils.LOTTIE_ERROR_JSON
+import com.harifrizki.storyapp.utils.MenuCode.*
 import com.harifrizki.storyapp.utils.NotificationType.*
 import com.harifrizki.storyapp.utils.goToErrorPage
 import com.harifrizki.storyapp.utils.isNetworkConnected
@@ -36,6 +42,9 @@ open class BaseActivity : AppCompatActivity() {
     private val option by lazy {
         Option()
     }
+    private val optionList by lazy {
+        OptionList()
+    }
     private val bottomOption by lazy {
         BottomOption()
     }
@@ -47,6 +56,7 @@ open class BaseActivity : AppCompatActivity() {
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
 
     private var rootView: View? = null
+    private var detailStory: ComponentsDetailStoryBinding? = null
     private var sfl: ShimmerFrameLayout? = null
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -63,6 +73,7 @@ open class BaseActivity : AppCompatActivity() {
         createLoading()
         createNotification()
         createOption()
+        createOptionList()
     }
 
     private fun createLoading() {
@@ -83,16 +94,23 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    private fun createOptionList() {
+        optionList.apply {
+            create(context)
+        }
+    }
+
     fun createEmpty(binding: ComponentsEmptyDataBinding?) {
         empty.create(binding)
     }
 
-    fun createRootView(view: View?) {
-        this.rootView = view
-    }
-
     fun createRootView(view: View?, sfl: ShimmerFrameLayout?) {
         this.rootView = view
+        this.sfl = sfl
+    }
+
+    fun createRootView(detailStory: ComponentsDetailStoryBinding?, sfl: ShimmerFrameLayout?) {
+        this.detailStory = detailStory
         this.sfl = sfl
     }
 
@@ -102,7 +120,7 @@ open class BaseActivity : AppCompatActivity() {
         subTitle: String?,
         icon: Int? = R.drawable.ic_round_settings_24,
         useMode: Int? = USE_ONLY_TITLE,
-        onClick: (() -> Unit)? = null
+        onClick: ((View) -> Unit)? = { }
     ) {
         appBar.apply {
             create(context, binding)
@@ -110,7 +128,7 @@ open class BaseActivity : AppCompatActivity() {
             subTitle(subTitle)
             setBar(icon = icon, useMode = useMode)
             onClickIconAppBar = {
-                onClick?.invoke()
+                onClick?.invoke(it)
             }
         }
     }
@@ -224,6 +242,47 @@ open class BaseActivity : AppCompatActivity() {
         loading.dismiss()
     }
 
+    fun showOptionList(
+        view: View?,
+        menus: ArrayList<Menu>?,
+        background: Int?,
+        xPosition: Int?,
+        yPosition: Int?,
+        onClickMenu: ((Menu) -> Unit)?
+    ) {
+        optionList.apply {
+            setBackground(background?.let { context?.getDrawable(it) })
+            setMenus(menus)
+            show(view, xPosition, yPosition)
+            onClick = {
+                it?.let { menu -> onClickMenu?.invoke(menu) }
+            }
+        }
+    }
+
+    fun dismissOptionList() {
+        optionList.dismiss()
+    }
+
+    fun showBottomOption(
+        title: String?,
+        menus: ArrayList<Menu>?,
+        onClickMenu: ((Menu) -> Unit)?
+    ) {
+        bottomOption.apply {
+            this.title = title
+            options = menus
+            onClick = {
+                it?.let { menu -> onClickMenu?.invoke(menu) }
+            }
+            show(supportFragmentManager, null)
+        }
+    }
+
+    fun dismissBottomOption() {
+        bottomOption.dismiss()
+    }
+
     fun wasError(generalResponse: GeneralResponse?) {
         context?.let { context ->
             resultLauncher?.let { resultLauncher ->
@@ -242,5 +301,154 @@ open class BaseActivity : AppCompatActivity() {
         ties?.forEach {
             it.text?.clear()
         }
+    }
+
+    fun showRootView() {
+        rootView?.visibility = View.VISIBLE
+    }
+
+    fun showView(views: Array<View>?) {
+        views?.forEach {
+            it.visibility = View.VISIBLE
+        }
+    }
+
+    fun dismissRootView() {
+        rootView?.visibility = View.GONE
+    }
+
+    fun dismissView(views: Array<View>?) {
+        views?.forEach {
+            it.visibility = View.GONE
+        }
+    }
+
+    fun showEmptyError(
+        title: String?,
+        message: String?,
+        animation: String? = LOTTIE_ERROR_JSON,
+        useAnimation: Boolean? = true,
+        directShow: Boolean? = false
+    ) {
+        empty.apply {
+            message(title, message)
+            animation(animation, useAnimation)
+            if (directShow!!) show()
+        }
+    }
+
+    fun showEmpty() {
+        empty.show()
+    }
+
+    fun dismissEmpty() {
+        empty.dismiss()
+    }
+
+    fun shimmerOn(
+        shimmerFrameLayout: ShimmerFrameLayout?,
+        isOn: Boolean?
+    ) {
+        if (isOn!!) {
+            shimmerFrameLayout?.startShimmer()
+            shimmerFrameLayout?.visibility = View.VISIBLE
+        } else {
+            shimmerFrameLayout?.stopShimmer()
+            shimmerFrameLayout?.visibility = View.GONE
+        }
+    }
+
+    fun loadingList(
+        isOn: Boolean?,
+        isGetData: Boolean? = false
+    ) {
+        if (isOn!!) {
+            dismissRootView()
+            dismissEmpty()
+            shimmerOn(sfl, true)
+        } else {
+            shimmerOn(sfl, false)
+            if (isGetData!!) {
+                showRootView()
+                dismissEmpty()
+            } else {
+                dismissRootView()
+                showEmpty()
+            }
+        }
+    }
+
+    fun enableAccess(buttons: Array<Button>?) {
+        buttons!!.forEach {
+            it.isEnabled = true
+        }
+    }
+
+    fun disableAccess(buttons: Array<Button>?) {
+        buttons!!.forEach {
+            it.isEnabled = false
+        }
+    }
+
+    fun enableAccess(imageView: Array<ImageView>?) {
+        imageView!!.forEach {
+            it.isEnabled = true
+        }
+    }
+
+    fun disableAccess(imageView: Array<ImageView>?) {
+        imageView!!.forEach {
+            it.isEnabled = false
+        }
+    }
+
+    fun mainMenus(): ArrayList<Menu> {
+        val menus: ArrayList<Menu> = ArrayList()
+        menus.add(
+            Menu(
+                MENU_ADD_STORY,
+                context?.getString(R.string.main_menu_add_story),
+                R.drawable.ic_round_note_add_24,
+                true,
+                R.color.primary,
+                R.color.primary
+            )
+        )
+        menus.add(
+            Menu(
+                MENU_SETTING_LANGUAGE,
+                context?.getString(R.string.main_menu_setting_language),
+                R.drawable.ic_round_settings_24,
+                true,
+                R.color.primary,
+                R.color.primary
+            )
+        )
+        return menus
+    }
+
+    fun imageMenus(): ArrayList<Menu> {
+        val menus: ArrayList<Menu> = ArrayList()
+        menus.add(
+            Menu(
+                MENU_CAMERA,
+                context?.getString(R.string.menu_add_image_from_camera),
+                R.drawable.ic_round_photo_camera_24,
+                true,
+                R.color.primary,
+                R.color.primary
+            )
+        )
+        menus.add(
+            Menu(
+                MENU_GALLERY,
+                context?.getString(R.string.menu_add_image_from_gallery),
+                R.drawable.ic_round_folder_24,
+                true,
+                R.color.primary,
+                R.color.primary
+            )
+        )
+        return menus
     }
 }

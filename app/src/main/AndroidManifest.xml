@@ -28,7 +28,7 @@
             android:exported="false">
         </activity>
         <activity
-            android:name=".module.story.liststory.ListStoryActivity"
+            android:name=".module.authentication.login.LoginActivity"
             android:exported="false">
         </activity>
         <activity
@@ -42,7 +42,7 @@
             android:name=".module.authentication.registration.RegistrationActivity"
             android:exported="true" />
         <activity
-            android:name=".module.authentication.login.LoginActivity"
+            android:name=".module.story.liststory.ListStoryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

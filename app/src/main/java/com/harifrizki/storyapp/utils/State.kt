@@ -15,7 +15,9 @@ enum class ErrorState {
 enum class MenuCode {
     MENU_NONE,
     MENU_CAMERA,
-    MENU_GALLERY
+    MENU_GALLERY,
+    MENU_ADD_STORY,
+    MENU_SETTING_LANGUAGE
 }
 
 enum class NotificationType {

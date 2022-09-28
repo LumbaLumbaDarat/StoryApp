@@ -67,9 +67,8 @@ class RegistrationActivity : BaseActivity() {
         }
 
     private fun registration(registration: Registration?) {
-        if (networkConnected()) {
+        if (networkConnected())
             viewModel.registration(registration).observe(this, this.registration)
-        }
     }
 
     private val registration = Observer<DataResource<GeneralResponse>> {

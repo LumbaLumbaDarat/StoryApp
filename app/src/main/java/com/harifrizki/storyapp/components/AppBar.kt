@@ -11,7 +11,7 @@ import com.harifrizki.storyapp.utils.ZERO
 class AppBar() {
     private var context: Context? = null
     private var binding: ComponentsAppBarBinding? = null
-    var onClickIconAppBar: (() -> Unit)? = null
+    var onClickIconAppBar: ((View) -> Unit)? = null
 
     companion object {
         const val USE_ONLY_TITLE = 1
@@ -57,7 +57,9 @@ class AppBar() {
                             context?.getColor(R.color.primary)
                                 ?.let { color -> setColorFilter(color, PorterDuff.Mode.SRC_IN) }
                             visibility = View.VISIBLE
-                            onClickIconAppBar?.invoke()
+                            setOnClickListener {
+                                onClickIconAppBar?.invoke(this)
+                            }
                         }
                     }
                 }

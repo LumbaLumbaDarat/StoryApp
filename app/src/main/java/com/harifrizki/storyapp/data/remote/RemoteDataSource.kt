@@ -9,11 +9,14 @@ import com.harifrizki.storyapp.model.Registration
 import com.harifrizki.storyapp.utils.ApiResource
 import com.harifrizki.storyapp.utils.ResponseStatus
 import com.harifrizki.storyapp.utils.ResponseStatus.*
+import com.harifrizki.storyapp.utils.ZERO
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
+import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Converter
 import retrofit2.Response
 
 class RemoteDataSource : DataSource {
@@ -69,7 +72,7 @@ class RemoteDataSource : DataSource {
             result.value = ApiResource.success(response.body()!!)
         else result.value = ApiResource.error(
             modelResponse,
-            GeneralResponse(true, response.message())
+            NetworkApi.error(response)
         )
     }
 
