@@ -54,6 +54,7 @@
     <string name="message_loading">Please wait…</string>
     <string name="message_loading_registration">[Please wait], We are currently [Registering Your Account]</string>
     <string name="message_loading_login">[Please wait]\nWe are [looking for], [Your Credential] data</string>
+    <string name="message_loading_add_story">[Please wait]\nWe are [Add Your Story], to [Our Database]</string>
 
     <string name="main_menu_add_story">Add Story</string>
     <string name="main_menu_setting_language">Language</string>
@@ -61,4 +62,15 @@
     <string name="get_image_from">Take Picture by</string>
     <string name="menu_add_image_from_camera">Camera</string>
     <string name="menu_add_image_from_gallery">Gallery</string>
+
+    <string name="title_failed_get_permission">Failed to Get Permission</string>
+    <string name="message_failed_get_permission">You [must allow] the App to access your [Camera] and [Gallery] to be able to [add Images]</string>
+
+    <string name="message_failed_capture_image">Failed to Capture Image</string>
+    <string name="message_failed_show_camera">Failed to Show Camera</string>
+
+    <string name="title_choose_image_from_gallery">Choose Image</string>
+
+    <string name="message_image_file_not_yet_add">Please Add [Your Image Story]</string>
+    <string name="message_description_story_not_yet_add">Please Add [Your Story]</string>
 </resources>

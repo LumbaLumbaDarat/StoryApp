@@ -54,6 +54,9 @@ class Notification(
                 NOTIFICATION_ERROR -> {
                     setAnimation(LOTTIE_ERROR_JSON)
                 }
+                NOTIFICATION_WARNING -> {
+                    setAnimation(LOTTIE_WARNING_JSON)
+                }
                 NOTIFICATION_INFORMATION -> {
                     setAnimation(LOTTIE_INFORMATION_JSON)
                 }

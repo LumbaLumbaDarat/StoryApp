@@ -22,6 +22,7 @@ enum class MenuCode {
 
 enum class NotificationType {
     NOTIFICATION_ERROR,
+    NOTIFICATION_WARNING,
     NOTIFICATION_SUCCESS,
     NOTIFICATION_INFORMATION
 }

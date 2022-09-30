@@ -197,6 +197,22 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    fun showWarning(
+        titleNotification: String? = context?.getString(R.string.notification_warning_title),
+        message: String?,
+        buttonTitle: String? = context?.getString(R.string.ok),
+        onClick: (() -> Unit)? = { dismissNotification() }
+    ) {
+        notification.apply {
+            message?.let { notification(it) }
+            titleNotification(titleNotification)
+            buttonTitle(buttonTitle)
+            notificationType(NOTIFICATION_WARNING)
+            onClickButton = { onClick?.invoke() }
+            show()
+        }
+    }
+
     fun showInformation(
         titleNotification: String? = context?.getString(R.string.notification_information_title),
         message: String?,
