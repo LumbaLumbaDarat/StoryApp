@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View.OnClickListener
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -73,26 +74,29 @@ class AddStoryActivity : BaseActivity() {
         if (it.resultCode == RESULT_OK) {
             when (menuCode) {
                 MENU_CAMERA -> {
-                    if (it.data?.getBooleanExtra(WAS_SUCCESS_GET_IMAGE, false) == true)
-                    {
+                    if (it.data?.getBooleanExtra(WAS_SUCCESS_GET_IMAGE, false) == true) {
                         @Suppress("DEPRECATION")
-                        imageFile = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                        imageFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                             it.data?.getSerializableExtra(RESULT_CAPTURE_IMAGE, File::class.java)
                         else it.data?.getSerializableExtra(RESULT_CAPTURE_IMAGE) as File
                         val isBackFromCamera = it.data?.getBooleanExtra(IS_BACK_FROM_CAMERA, true)
-                        val result = isBackFromCamera?.let { back ->
-                            rotateBitmap(
-                                BitmapFactory.decodeFile(imageFile?.path),
-                                back
-                            )
-                        }
-                        binding.ivAddImage.setImageBitmap(result)
+                        doGlide(
+                            this,
+                            binding.ivAddImage,
+                            BitmapFactory.decodeFile(imageFile?.path),
+                            scaleType = ImageView.ScaleType.CENTER
+                        )
                     }
                 }
                 MENU_GALLERY -> {
                     val selectedImage: Uri = it.data?.data as Uri
                     val imageFile = uriToFile(selectedImage, this)
-                    binding.ivAddImage.setImageURI(selectedImage)
+                    doGlide(
+                        this,
+                        binding.ivAddImage,
+                        selectedImage,
+                        scaleType = ImageView.ScaleType.CENTER
+                    )
                 }
                 else -> {}
             }
@@ -178,8 +182,7 @@ class AddStoryActivity : BaseActivity() {
 
     private fun validateAddStory() {
         if (imageFile != null) {
-            if (binding.edAddDescription.text.isNotEmpty())
-            {
+            if (binding.edAddDescription.text.isNotEmpty()) {
                 addStory()
             } else ColorToast.roundColorWarning(
                 this,

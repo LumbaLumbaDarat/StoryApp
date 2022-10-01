@@ -6,6 +6,7 @@
     <dimen name="padding_multiple_default">40dp</dimen>
 
     <dimen name="image_size_default">200dp</dimen>
+    <dimen name="image_size_add_default">300dp</dimen>
     <dimen name="image_size_half_default">100dp</dimen>
 
     <dimen name="round_default">5dp</dimen>

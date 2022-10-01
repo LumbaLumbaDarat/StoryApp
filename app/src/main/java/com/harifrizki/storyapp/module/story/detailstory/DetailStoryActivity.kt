@@ -21,6 +21,7 @@ class DetailStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener
         create(this, resultLauncher)
 
         binding.apply {
+            initializeDetailStory()
             createAppBar(
                 appBar,
                 title = getString(R.string.app_name),
@@ -28,7 +29,6 @@ class DetailStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener
             )
             createRootView(detailStory, sflDetailStory)
             createEmpty(emptyData)
-            initializeDetailStory()
             srlDetailStory.apply {
                 setThemeForSwipeRefreshLayoutLoadingAnimation(this@DetailStoryActivity, this)
                 setOnRefreshListener(this@DetailStoryActivity)
@@ -57,14 +57,14 @@ class DetailStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener
             disableAccess()
             loadingList(true)
             Handler().postDelayed({
-                loadingList(false, false)
+                loadingList(false, true)
                 enableAccess()
             }, 1000)
         }
     }
 
     private fun initializeDetailStory() {
-        binding.detailStory.apply {
+        binding.detailStoryShimmer.apply {
             widgetStartDrawableShimmer(
                 arrayOf(
                     ivDetailPhoto

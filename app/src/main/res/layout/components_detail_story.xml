@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/iv_detail_photo"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/image_size_default"
+        android:layout_height="@dimen/image_size_add_default"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/default_wait_image" />
 

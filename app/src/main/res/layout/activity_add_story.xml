@@ -36,7 +36,7 @@
             <ImageView
                 android:id="@+id/iv_add_image"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/image_size_default"
+                android:layout_height="@dimen/image_size_add_default"
                 android:clickable="true"
                 android:focusable="true"
                 app:srcCompat="@drawable/default_add_image" />

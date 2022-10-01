@@ -71,6 +71,9 @@
 
     <string name="title_choose_image_from_gallery">Choose Image</string>
 
-    <string name="message_image_file_not_yet_add">Please Add [Your Image Story]</string>
-    <string name="message_description_story_not_yet_add">Please Add [Your Story]</string>
+    <string name="message_image_file_not_yet_add">Please Add Your Image Story</string>
+    <string name="message_description_story_not_yet_add">Please Add Your Story</string>
+
+    <string name="title_logout">Logout from Story App</string>
+    <string name="message_logout">Do you want to [exit] the application?</string>
 </resources>

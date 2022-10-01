@@ -13,9 +13,13 @@ import com.harifrizki.storyapp.R
 import com.harifrizki.storyapp.components.AppBar.Companion.USE_WITH_ICON_WITH_CLICK
 import com.harifrizki.storyapp.databinding.ActivityListStoryBinding
 import com.harifrizki.storyapp.module.adapter.StoryAdapter
+import com.harifrizki.storyapp.module.authentication.login.LoginActivity
 import com.harifrizki.storyapp.module.base.BaseActivity
 import com.harifrizki.storyapp.module.story.addstory.AddStoryActivity
+import com.harifrizki.storyapp.module.story.detailstory.DetailStoryActivity
+import com.harifrizki.storyapp.utils.MODEL_LOGIN
 import com.harifrizki.storyapp.utils.MenuCode.*
+import com.harifrizki.storyapp.utils.PreferencesManager
 import com.harifrizki.storyapp.utils.ZERO
 
 class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -45,6 +49,24 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             srlListStory.apply {
                 setThemeForSwipeRefreshLayoutLoadingAnimation(this@ListStoryActivity, this)
                 setOnRefreshListener(this@ListStoryActivity)
+            }
+            actionLogout.setOnClickListener {
+                showOption(
+                    getString(R.string.title_logout),
+                    getString(R.string.message_logout),
+                    onPositive = {
+                        dismissOption()
+                        PreferencesManager.getInstance(this@ListStoryActivity).removePreferences(MODEL_LOGIN)
+                        startActivity(
+                            Intent(
+                                this@ListStoryActivity,
+                                LoginActivity::class.java
+                            )
+                        )
+                        finish()
+                    },
+                    onNegative = { dismissOption() }
+                )
             }
         }
         story()
@@ -110,7 +132,8 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     }
                     MENU_SETTING_LANGUAGE -> {
                         dismissOptionList()
-                        resultLauncher.launch(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                        resultLauncher.launch(Intent(this, DetailStoryActivity::class.java))
+                        //resultLauncher.launch(Intent(Settings.ACTION_LOCALE_SETTINGS))
                     }
                     else -> {}
                 }

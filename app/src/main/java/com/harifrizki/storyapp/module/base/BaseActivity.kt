@@ -21,12 +21,9 @@ import com.harifrizki.storyapp.databinding.ComponentsAppBarBinding
 import com.harifrizki.storyapp.databinding.ComponentsDetailStoryBinding
 import com.harifrizki.storyapp.databinding.ComponentsEmptyDataBinding
 import com.harifrizki.storyapp.model.Menu
-import com.harifrizki.storyapp.utils.ErrorState
-import com.harifrizki.storyapp.utils.LOTTIE_ERROR_JSON
+import com.harifrizki.storyapp.utils.*
 import com.harifrizki.storyapp.utils.MenuCode.*
 import com.harifrizki.storyapp.utils.NotificationType.*
-import com.harifrizki.storyapp.utils.goToErrorPage
-import com.harifrizki.storyapp.utils.isNetworkConnected
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -299,6 +296,37 @@ open class BaseActivity : AppCompatActivity() {
         bottomOption.dismiss()
     }
 
+    fun showOption(
+        titleOption: String?,
+        message: String?,
+        optionAnimation: String? = LOTTIE_QUESTION_JSON,
+        titlePositive: String? = context?.getString(R.string.ok),
+        titleNegative: String? = context?.getString(R.string.cancel),
+        colorButtonPositive: Int? = R.color.primary,
+        onPositive: (() -> Unit)?,
+        onNegative: (() -> Unit)? = { dismissOption() }
+    ) {
+        option.apply {
+            titleOption(titleOption)
+            message?.let { option(it) }
+            optionAnimation(optionAnimation)
+            buttonPositive(titlePositive)
+            buttonPositive(colorButtonPositive)
+            buttonNegative(titleNegative)
+            onClickPositive = {
+                onPositive?.invoke()
+            }
+            onClickNegative = {
+                onNegative?.invoke()
+            }
+            show()
+        }
+    }
+
+    fun dismissOption() {
+        option.dismiss()
+    }
+
     fun wasError(generalResponse: GeneralResponse?) {
         context?.let { context ->
             resultLauncher?.let { resultLauncher ->
@@ -323,6 +351,10 @@ open class BaseActivity : AppCompatActivity() {
         rootView?.visibility = View.VISIBLE
     }
 
+    fun showDetailStory() {
+        detailStory?.root?.visibility = View.VISIBLE
+    }
+
     fun showView(views: Array<View>?) {
         views?.forEach {
             it.visibility = View.VISIBLE
@@ -331,6 +363,10 @@ open class BaseActivity : AppCompatActivity() {
 
     fun dismissRootView() {
         rootView?.visibility = View.GONE
+    }
+
+    fun dismissDetailStory() {
+        detailStory?.root?.visibility = View.GONE
     }
 
     fun dismissView(views: Array<View>?) {
@@ -379,16 +415,19 @@ open class BaseActivity : AppCompatActivity() {
         isGetData: Boolean? = false
     ) {
         if (isOn!!) {
-            dismissRootView()
+            if (detailStory != null) dismissDetailStory()
+            else dismissRootView()
             dismissEmpty()
             shimmerOn(sfl, true)
         } else {
             shimmerOn(sfl, false)
             if (isGetData!!) {
-                showRootView()
+                if (detailStory != null) showDetailStory()
+                else showRootView()
                 dismissEmpty()
             } else {
-                dismissRootView()
+                if (detailStory != null) dismissDetailStory()
+                else dismissRootView()
                 showEmpty()
             }
         }

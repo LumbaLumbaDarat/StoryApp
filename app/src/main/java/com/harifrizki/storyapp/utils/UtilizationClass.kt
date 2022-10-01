@@ -30,8 +30,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import com.harifrizki.storyapp.R
 import com.harifrizki.storyapp.data.remote.response.GeneralResponse
 import com.harifrizki.storyapp.module.errorpage.ConnectionErrorActivity
@@ -168,12 +174,56 @@ fun doGlide(
     context: Context?,
     imageView: ImageView?,
     uri: Uri?,
+    scaleType: ImageView.ScaleType? = ImageView.ScaleType.FIT_XY,
     imageError: Int? = R.drawable.default_wait_image
 ) {
     Glide.with(context!!).applyDefaultRequestOptions(requestOptions)
         .load(uri)
         .error(imageError)
-        .into(imageView!!)
+        .listener(object : RequestListener<Drawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean { return false }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                imageView?.apply {
+                    this.scaleType = scaleType
+                }
+                return false
+            }
+        })
+}
+
+fun doGlide(
+    context: Context?,
+    imageView: ImageView?,
+    bitmap: Bitmap?,
+    scaleType: ImageView.ScaleType? = ImageView.ScaleType.FIT_XY,
+    imageError: Int? = R.drawable.default_wait_image
+) {
+    Glide.with(context!!).applyDefaultRequestOptions(requestOptions)
+        .asBitmap()
+        .load(bitmap)
+        .error(imageError)
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                imageView?.apply {
+                    setImageBitmap(resource)
+                    this.scaleType = scaleType
+                }
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) { }
+        })
 }
 
 @SuppressLint("UseCompatLoadingForDrawables")
