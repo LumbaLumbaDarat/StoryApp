@@ -1,5 +1,6 @@
 package com.harifrizki.storyapp.data.remote
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.harifrizki.storyapp.data.remote.response.GeneralResponse

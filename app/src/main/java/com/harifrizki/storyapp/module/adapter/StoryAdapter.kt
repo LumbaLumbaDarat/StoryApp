@@ -19,7 +19,7 @@ class StoryAdapter(
     var stories: ArrayList<Story>? = ArrayList()
     var onClickStory: ((Story?) -> Unit)? = null
 
-    @JvmName("initializeAdmins")
+    @JvmName("setNewStories")
     @SuppressLint("NotifyDataSetChanged")
     fun setStories(stories: ArrayList<Story>?) {
         this.stories?.apply {
@@ -30,7 +30,7 @@ class StoryAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addAdmins(stories: ArrayList<Story>?) {
+    fun addStories(stories: ArrayList<Story>?) {
         this.stories?.apply {
             addAll(stories!!)
             notifyDataSetChanged()

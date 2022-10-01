@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -20,6 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryApp">
+
         <activity
             android:name=".module.camerapage.CameraActivity"
             android:exported="false">
@@ -34,19 +37,19 @@
             android:name=".module.story.detailstory.DetailStoryActivity"
             android:exported="true" />
         <activity
-            android:name=".module.authentication.login.LoginActivity"
+            android:name=".module.story.liststory.ListStoryActivity"
             android:exported="true" />
         <activity
             android:name=".module.errorpage.ConnectionErrorActivity"
             android:exported="true" />
         <activity
-            android:name=".module.splash.SplashScreenActivity"
+            android:name=".module.authentication.login.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".module.authentication.registration.RegistrationActivity"
             android:exported="true" />
         <activity
-            android:name=".module.story.liststory.ListStoryActivity"
+            android:name=".module.splash.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

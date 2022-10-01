@@ -14,6 +14,8 @@ const val IMAGE_FORMAT_JPG = ".jpg"
 const val IMAGE_FORMAT_GALLERY = "image/*"
 const val FILENAME_FORMAT = "dd-MMM-yyyy"
 
+const val WAIT_FOR_2000 = 2000L
+
 val APP_PERMISSION_GET_IMAGE: Array<String> = arrayOf(
     Manifest.permission.CAMERA
 )

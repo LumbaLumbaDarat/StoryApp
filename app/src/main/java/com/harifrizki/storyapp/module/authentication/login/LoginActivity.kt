@@ -66,7 +66,7 @@ class LoginActivity : BaseActivity() {
     private val login = Observer<DataResource<LoginResponse>> {
         when (it.responseStatus) {
             LOADING -> {
-                showLoading(getString(R.string.message_loading_registration))
+                showLoading(getString(R.string.message_loading_login))
             }
             SUCCESS -> {
                 dismissLoading()

@@ -171,7 +171,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun isResponseSuccess(generalResponse: GeneralResponse?): Boolean {
-        return if (generalResponse?.error == true) true
+        return if (generalResponse?.error == false) true
         else {
             showError(message = generalResponse?.message)
             false

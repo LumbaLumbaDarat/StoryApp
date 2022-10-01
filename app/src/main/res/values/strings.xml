@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Story App</string>
     <string name="app_sub">Create Your Story now</string>
+    <string name="app_version">Apps Version %s</string>
 
     <string name="password">Password</string>
     <string name="message_hint_password">Input your Password</string>

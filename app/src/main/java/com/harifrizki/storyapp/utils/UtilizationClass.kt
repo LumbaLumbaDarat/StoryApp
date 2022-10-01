@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.PorterDuff
@@ -48,6 +49,14 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
+
+fun getVersion(context: Context?): String {
+    return try {
+        context?.packageManager?.getPackageInfo(context.packageName, 0)!!.versionName
+    } catch (e: PackageManager.NameNotFoundException) {
+        EMPTY_STRING
+    }
+}
 
 fun isNetworkConnected(context: Context?): Boolean {
     val result: Boolean
