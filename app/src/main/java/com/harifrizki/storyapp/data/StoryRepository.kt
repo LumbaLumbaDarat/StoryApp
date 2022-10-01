@@ -3,9 +3,12 @@ package com.harifrizki.storyapp.data
 import androidx.lifecycle.LiveData
 import com.harifrizki.storyapp.data.remote.RemoteDataSource
 import com.harifrizki.storyapp.data.remote.response.GeneralResponse
+import com.harifrizki.storyapp.data.remote.response.GetAllStoriesResponse
 import com.harifrizki.storyapp.data.remote.response.LoginResponse
+import com.harifrizki.storyapp.data.remote.response.LoginResultResponse
 import com.harifrizki.storyapp.model.Login
 import com.harifrizki.storyapp.model.Registration
+import com.harifrizki.storyapp.model.Story
 import com.harifrizki.storyapp.utils.ApiResource
 import com.harifrizki.storyapp.utils.AppExecutor
 import com.harifrizki.storyapp.utils.DataResource
@@ -37,6 +40,23 @@ class StoryRepository(
         return object : NetworkResource<LoginResponse>() {
             override fun createCall(): LiveData<ApiResource<LoginResponse>> =
                 remote.login(login)
+        }.asLiveData()
+    }
+
+    override fun getAllStories(loginResultResponse: LoginResultResponse?): LiveData<DataResource<GetAllStoriesResponse>> {
+        return object : NetworkResource<GetAllStoriesResponse>() {
+            override fun createCall(): LiveData<ApiResource<GetAllStoriesResponse>> =
+                remote.getAllStories(loginResultResponse)
+        }.asLiveData()
+    }
+
+    override fun addStory(
+        loginResultResponse: LoginResultResponse?,
+        story: Story?
+    ): LiveData<DataResource<GeneralResponse>> {
+        return object : NetworkResource<GeneralResponse>() {
+            override fun createCall(): LiveData<ApiResource<GeneralResponse>> =
+                remote.addStory(loginResultResponse, story)
         }.asLiveData()
     }
 }

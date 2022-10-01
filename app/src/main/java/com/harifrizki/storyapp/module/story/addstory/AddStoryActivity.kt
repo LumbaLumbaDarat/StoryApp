@@ -7,29 +7,40 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.harifrizki.storyapp.R
+import com.harifrizki.storyapp.data.remote.response.GeneralResponse
+import com.harifrizki.storyapp.data.remote.response.LoginResultResponse
 import com.harifrizki.storyapp.databinding.ActivityAddStoryBinding
+import com.harifrizki.storyapp.model.Story
 import com.harifrizki.storyapp.module.base.BaseActivity
 import com.harifrizki.storyapp.module.camerapage.CameraActivity
 import com.harifrizki.storyapp.utils.*
 import com.harifrizki.storyapp.utils.MenuCode.*
+import com.harifrizki.storyapp.utils.ResponseStatus.*
 import com.lumbalumbadrt.colortoast.ColorToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 class AddStoryActivity : BaseActivity() {
     private val binding by lazy {
         ActivityAddStoryBinding.inflate(layoutInflater)
     }
+    private val userLogin: LoginResultResponse? by lazy {
+        PreferencesManager.getInstance(this)
+            .getPreferences(MODEL_LOGIN, LoginResultResponse::class.java)
+    }
 
+    private val viewModel by viewModel<AddStoryViewModel>()
     private var menuCode: MenuCode = MENU_NONE
     private var imageFile: File? = null
+    private var wasSuccessAddStory: Boolean? = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,20 +114,39 @@ class AddStoryActivity : BaseActivity() {
         }
     }
 
-    private fun addStory() {
+    private fun addStory(story: Story?) {
         if (networkConnected()) {
-            showLoading(
-                message = getString(R.string.message_loading_add_story)
-            )
-            Handler().postDelayed({
+            userLogin?.let { viewModel.addStory(it, story!!).observe(this, addStory) }
+        }
+    }
+
+    private val addStory = Observer<DataResource<GeneralResponse>> {
+        when (it.responseStatus) {
+            LOADING -> {
+                showLoading(getString(R.string.message_loading_add_story))
+            }
+            SUCCESS -> {
                 dismissLoading()
-            }, 1000)
+                when (isResponseSuccess(GeneralResponse(it.data?.error, it.data?.message))) {
+                    true -> successAddImage()
+                    false -> {}
+                }
+            }
+            ERROR -> {
+                dismissLoading()
+                wasError(it.generalResponse)
+            }
+            else -> {}
         }
     }
 
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                Intent().apply {
+                    putExtra(WAS_SUCCESS_ADD_STORY, wasSuccessAddStory)
+                    setResult(RESULT_OK, this)
+                }
                 finish()
             }
         }
@@ -183,7 +213,12 @@ class AddStoryActivity : BaseActivity() {
     private fun validateAddStory() {
         if (imageFile != null) {
             if (binding.edAddDescription.text.isNotEmpty()) {
-                addStory()
+                addStory(
+                    Story(
+                        description = binding.edAddDescription.text.toString().trim(),
+                        photo = imageFile
+                    )
+                )
             } else ColorToast.roundColorWarning(
                 this,
                 getString(R.string.message_description_story_not_yet_add),
@@ -198,5 +233,16 @@ class AddStoryActivity : BaseActivity() {
 
     private fun allPermissionsGranted() = APP_PERMISSION_GET_IMAGE.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun successAddImage() {
+        showSuccess(
+            message = getString(R.string.message_success_add_story),
+            onClick = {
+                dismissNotification()
+                wasSuccessAddStory = true
+                onBackPressedDispatcher.onBackPressed()
+            }
+        )
     }
 }

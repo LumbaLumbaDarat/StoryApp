@@ -2,6 +2,7 @@ package com.harifrizki.storyapp.data.remote.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.harifrizki.storyapp.model.Story
 import com.harifrizki.storyapp.utils.EMPTY_STRING
 import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
@@ -24,4 +25,10 @@ data class LoginResponse(
     @SerializedName("error") var error: Boolean? = false,
     @SerializedName("message") var message: String? = EMPTY_STRING,
     @SerializedName("loginResult") var loginResult: LoginResultResponse? = LoginResultResponse()
+)
+
+data class GetAllStoriesResponse(
+    @SerializedName("error") var error: Boolean? = false,
+    @SerializedName("message") var message: String? = EMPTY_STRING,
+    @SerializedName("listStory") var stories: ArrayList<Story>? = null,
 )

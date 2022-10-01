@@ -169,13 +169,34 @@ fun doGlide(
     context: Context?,
     imageView: ImageView?,
     imageUrl: String?,
+    scaleType: ImageView.ScaleType? = ImageView.ScaleType.FIT_XY,
     imageError: Int? = R.drawable.default_wait_image
 ) {
     imageView?.let {
         Glide.with(context!!).applyDefaultRequestOptions(requestOptions)
             .load(imageUrl)
             .error(imageError)
-            .into(it)
+            .listener(object : RequestListener<Drawable> {
+        override fun onLoadFailed(
+            e: GlideException?,
+            model: Any?,
+            target: Target<Drawable>?,
+            isFirstResource: Boolean
+        ): Boolean { return false }
+
+        override fun onResourceReady(
+            resource: Drawable?,
+            model: Any?,
+            target: Target<Drawable>?,
+            dataSource: DataSource?,
+            isFirstResource: Boolean
+        ): Boolean {
+            imageView.apply {
+                this.scaleType = scaleType
+            }
+            return false
+        }
+    }).into(it)
     }
 }
 

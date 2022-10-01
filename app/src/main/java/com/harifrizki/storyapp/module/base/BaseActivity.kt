@@ -375,6 +375,20 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    fun showEmpty(
+        title: String?,
+        message: String?,
+        animation: String? = LOTTIE_SEARCH_NOT_FOUND_JSON,
+        useAnimation: Boolean? = true,
+        directShow: Boolean? = false
+    ) {
+        empty.apply {
+            message(title, message)
+            animation(animation, useAnimation)
+            if (directShow!!) show()
+        }
+    }
+
     fun showEmptyError(
         title: String?,
         message: String?,

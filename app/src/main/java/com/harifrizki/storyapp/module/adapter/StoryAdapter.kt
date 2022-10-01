@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.harifrizki.storyapp.databinding.ItemStoryBinding
 import com.harifrizki.storyapp.model.Story
-import com.harifrizki.storyapp.utils.doGlide
-import com.harifrizki.storyapp.utils.getMaxShimmerList
-import com.harifrizki.storyapp.utils.layoutStartDrawableShimmer
-import com.harifrizki.storyapp.utils.widgetStartDrawableShimmer
+import com.harifrizki.storyapp.utils.*
 
 class StoryAdapter(
     var context: Context?,
@@ -79,7 +77,8 @@ class StoryAdapter(
                     doGlide(
                         context,
                         ivItemPhoto,
-                        story?.photoUrl
+                        story?.photoUrl,
+                        scaleType = ImageView.ScaleType.CENTER
                     )
                     tvItemName.text = story?.name
                     tvItemDescription.text = story?.description

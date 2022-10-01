@@ -72,6 +72,7 @@ data class Story(
     @field:SerializedName("name") var name: String? = EMPTY_STRING,
     @field:SerializedName("description") var description: String? = EMPTY_STRING,
     @field:SerializedName("photoUrl") var photoUrl: String? = EMPTY_STRING,
+    var photo: File? = null,
     @field:SerializedName("createdAt") var createdAt: String? = EMPTY_STRING,
     @field:SerializedName("lat") var lat: Float? = 0.0F,
     @field:SerializedName("lon") var long: Float? = 0.0F

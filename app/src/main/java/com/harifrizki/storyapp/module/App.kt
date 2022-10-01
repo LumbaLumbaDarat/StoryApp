@@ -3,6 +3,8 @@ package com.harifrizki.storyapp.module
 import androidx.multidex.MultiDexApplication
 import com.harifrizki.storyapp.module.authentication.login.LoginViewModel
 import com.harifrizki.storyapp.module.authentication.registration.RegistrationViewModel
+import com.harifrizki.storyapp.module.story.addstory.AddStoryViewModel
+import com.harifrizki.storyapp.module.story.liststory.ListStoryViewModel
 import com.harifrizki.storyapp.utils.Injection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -35,5 +37,7 @@ class App : MultiDexApplication() {
     val viewModelModule = module {
         viewModel { _ -> RegistrationViewModel(storyRepository = Injection.provideRepository()) }
         viewModel { _ -> LoginViewModel(storyRepository = Injection.provideRepository()) }
+        viewModel { _ -> ListStoryViewModel(storyRepository = Injection.provideRepository()) }
+        viewModel { _ -> AddStoryViewModel(storyRepository = Injection.provideRepository()) }
     }
 }
