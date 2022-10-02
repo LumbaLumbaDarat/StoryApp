@@ -3,6 +3,7 @@ package com.harifrizki.storyapp.module.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,7 @@ class StoryAdapter(
     var isShimmer: Boolean? = false
 ) : RecyclerView.Adapter<StoryAdapter.HolderView>() {
     var stories: ArrayList<Story>? = ArrayList()
-    var onClickStory: ((Story?) -> Unit)? = null
+    var onClickStory: ((holder: HolderView?, Story?) -> Unit)? = null
 
     @JvmName("setNewStories")
     @SuppressLint("NotifyDataSetChanged")
@@ -50,7 +51,7 @@ class StoryAdapter(
             story = stories!![position]
             holder.apply {
                 itemView.setOnClickListener {
-                    onClickStory?.invoke(story)
+                    onClickStory?.invoke(holder, story)
                 }
             }
         } else story = Story()

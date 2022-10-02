@@ -30,6 +30,7 @@
             android:id="@+id/iv_item_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:transitionName="item_photo"
             app:srcCompat="@drawable/default_wait_image" />
     </com.github.florent37.shapeofview.shapes.RoundRectView>
 
@@ -38,6 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_half_default"
+        android:transitionName="item_name"
         android:fontFamily="@font/oxygen_bold"
         android:text="@string/app_name"
         android:textSize="@dimen/text_almost_big"
@@ -53,6 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_half_half_default"
+        android:transitionName="item_description"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="@string/app_sub"

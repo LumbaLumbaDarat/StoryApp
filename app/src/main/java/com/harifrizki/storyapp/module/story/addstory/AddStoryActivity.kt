@@ -94,7 +94,7 @@ class AddStoryActivity : BaseActivity() {
                         showLoading(getString(R.string.message_loading_convert_image))
                         Handler(Looper.getMainLooper()).postDelayed({
                             @Suppress("DEPRECATION")
-                            imageFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                            imageFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                                 it.data?.getSerializableExtra(RESULT_CAPTURE_IMAGE, File::class.java)
                             else it.data?.getSerializableExtra(RESULT_CAPTURE_IMAGE) as File
                             val isBackFromCamera = it.data?.getBooleanExtra(IS_BACK_FROM_CAMERA, true)

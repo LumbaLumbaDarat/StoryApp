@@ -2,9 +2,12 @@ package com.harifrizki.storyapp.module.story.liststory
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,6 +17,7 @@ import com.harifrizki.storyapp.data.remote.response.GeneralResponse
 import com.harifrizki.storyapp.data.remote.response.GetAllStoriesResponse
 import com.harifrizki.storyapp.data.remote.response.LoginResultResponse
 import com.harifrizki.storyapp.databinding.ActivityListStoryBinding
+import com.harifrizki.storyapp.model.Story
 import com.harifrizki.storyapp.module.adapter.StoryAdapter
 import com.harifrizki.storyapp.module.authentication.login.LoginActivity
 import com.harifrizki.storyapp.module.base.BaseActivity
@@ -144,11 +148,27 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun initializeStory() {
         storyAdapter = StoryAdapter(context = this).apply {
-            onClickStory = {
+            onClickStory = { holder: StoryAdapter.HolderView?, story: Story? ->
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@ListStoryActivity,
+                        Pair.create(
+                            holder?.binding?.ivItemPhoto,
+                            holder?.binding?.ivItemPhoto?.transitionName
+                        ),
+                        Pair.create(
+                            holder?.binding?.tvItemName,
+                            holder?.binding?.tvItemName?.transitionName
+                        ),
+                        Pair.create(
+                            holder?.binding?.tvItemDescription,
+                            holder?.binding?.tvItemDescription?.transitionName
+                        )
+                    )
                 resultLauncher.launch(
                     Intent(this@ListStoryActivity, DetailStoryActivity::class.java).apply {
-                        putExtra(MODEL_STORY, it)
-                    }
+                        putExtra(MODEL_STORY, story)
+                    }, optionsCompat
                 )
             }
         }
@@ -183,8 +203,7 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     }
                     MENU_SETTING_LANGUAGE -> {
                         dismissOptionList()
-                        resultLauncher.launch(Intent(this, DetailStoryActivity::class.java))
-                        //resultLauncher.launch(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                        resultLauncher.launch(Intent(Settings.ACTION_LOCALE_SETTINGS))
                     }
                     else -> {}
                 }
