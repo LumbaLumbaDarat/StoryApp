@@ -4,11 +4,10 @@ import com.google.gson.JsonObject
 import com.harifrizki.storyapp.data.remote.response.GeneralResponse
 import com.harifrizki.storyapp.data.remote.response.GetAllStoriesResponse
 import com.harifrizki.storyapp.data.remote.response.LoginResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface EndPoint {
     @Headers("Content-Type: application/json")
@@ -26,8 +25,9 @@ interface EndPoint {
     fun getAllStories():
             Call<GetAllStoriesResponse>
 
-    @Headers("Content-Type: application/json")
+    @Multipart
     @POST(ADD_STORY)
-    fun addStory():
+    fun addStory(@Part("description") description: RequestBody,
+                 @Part photo: MultipartBody.Part):
             Call<GeneralResponse>
 }

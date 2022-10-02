@@ -9,9 +9,7 @@ import com.harifrizki.storyapp.data.remote.response.LoginResultResponse
 import com.harifrizki.storyapp.model.Login
 import com.harifrizki.storyapp.model.Registration
 import com.harifrizki.storyapp.model.Story
-import com.harifrizki.storyapp.utils.ApiResource
-import com.harifrizki.storyapp.utils.EMPTY_STRING
-import com.harifrizki.storyapp.utils.ResponseStatus
+import com.harifrizki.storyapp.utils.*
 import com.harifrizki.storyapp.utils.ResponseStatus.EMPTY
 import com.harifrizki.storyapp.utils.ResponseStatus.ERROR
 import com.orhanobut.logger.AndroidLogAdapter
@@ -65,7 +63,17 @@ class RemoteDataSource : DataSource {
     ): LiveData<ApiResource<GeneralResponse>> {
         return response(
             loginResultResponse?.token!!,
-            NetworkApi.connectToApi(loginResultResponse.token!!).addStory(),
+            NetworkApi.connectToApi(loginResultResponse.token!!).addStory(
+                toRequestBody(
+                    story?.description,
+                    MEDIA_TYPE_TEXT_PLAIN
+                ),
+                toMultipartBody(
+                    story?.photo,
+                    "photo",
+                    MEDIA_TYPE_IMAGE_JPEG
+                )
+            ),
             GeneralResponse()
         )
     }

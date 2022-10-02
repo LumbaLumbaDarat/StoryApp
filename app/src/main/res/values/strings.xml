@@ -81,4 +81,6 @@
     <string name="message_story_not_found">Your Story Not found</string>
 
     <string name="message_success_add_story">You have Successfully [Add New Story]</string>
+
+    <string name="message_loading_convert_image">[Please Wait], We are [Compress Your Image]</string>
 </resources>

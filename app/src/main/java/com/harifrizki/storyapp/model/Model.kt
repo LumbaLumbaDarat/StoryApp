@@ -76,23 +76,7 @@ data class Story(
     @field:SerializedName("createdAt") var createdAt: String? = EMPTY_STRING,
     @field:SerializedName("lat") var lat: Float? = 0.0F,
     @field:SerializedName("lon") var long: Float? = 0.0F
-) : Parcelable {
-    companion object {
-        fun jsonObject(
-            story: Story
-        ): JsonObject {
-            return JsonObject().apply {
-                addProperty(story::id.name, story.id)
-                addProperty(story::name.name, story.name)
-                addProperty(story::description.name, story.description)
-                addProperty(story::photoUrl.name, story.photoUrl)
-                addProperty(story::createdAt.name, story.createdAt)
-                addProperty(story::lat.name, story.lat)
-                addProperty(story::long.name, story.long)
-            }
-        }
-    }
-}
+) : Parcelable
 
 @Parcelize
 data class Menu(

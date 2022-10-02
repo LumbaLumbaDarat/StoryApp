@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.Toast
@@ -14,6 +16,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.whenStarted
 import com.harifrizki.storyapp.R
 import com.harifrizki.storyapp.data.remote.response.GeneralResponse
 import com.harifrizki.storyapp.data.remote.response.LoginResultResponse
@@ -25,6 +29,7 @@ import com.harifrizki.storyapp.utils.*
 import com.harifrizki.storyapp.utils.MenuCode.*
 import com.harifrizki.storyapp.utils.ResponseStatus.*
 import com.lumbalumbadrt.colortoast.ColorToast
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -86,28 +91,70 @@ class AddStoryActivity : BaseActivity() {
             when (menuCode) {
                 MENU_CAMERA -> {
                     if (it.data?.getBooleanExtra(WAS_SUCCESS_GET_IMAGE, false) == true) {
-                        @Suppress("DEPRECATION")
-                        imageFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-                            it.data?.getSerializableExtra(RESULT_CAPTURE_IMAGE, File::class.java)
-                        else it.data?.getSerializableExtra(RESULT_CAPTURE_IMAGE) as File
-                        val isBackFromCamera = it.data?.getBooleanExtra(IS_BACK_FROM_CAMERA, true)
-                        doGlide(
-                            this,
-                            binding.ivAddImage,
-                            BitmapFactory.decodeFile(imageFile?.path),
-                            scaleType = ImageView.ScaleType.CENTER
-                        )
+                        showLoading(getString(R.string.message_loading_convert_image))
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            @Suppress("DEPRECATION")
+                            imageFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                                it.data?.getSerializableExtra(RESULT_CAPTURE_IMAGE, File::class.java)
+                            else it.data?.getSerializableExtra(RESULT_CAPTURE_IMAGE) as File
+                            val isBackFromCamera = it.data?.getBooleanExtra(IS_BACK_FROM_CAMERA, true)
+                            try {
+                                doGlide(
+                                    this,
+                                    binding.ivAddImage,
+                                    BitmapFactory.decodeFile(imageFile?.path),
+                                    scaleType = ImageView.ScaleType.CENTER
+                                )
+                                lifecycleScope.launch {
+                                    whenStarted {
+                                        imageFile = reduceFileImage(imageFile!!)
+                                    }
+                                    dismissLoading()
+                                }
+                            } catch (e: Exception) {
+                                dismissLoading()
+                                showError(message = e.message, onClick = {
+                                    imageFile = null
+                                    binding.ivAddImage.apply {
+                                        setImageResource(R.drawable.default_add_image)
+                                        scaleType = null
+                                    }
+                                    dismissNotification()
+                                })
+                            }
+                        }, WAIT_FOR_2000)
                     }
                 }
                 MENU_GALLERY -> {
                     val selectedImage: Uri = it.data?.data as Uri
-                    val imageFile = uriToFile(selectedImage, this)
-                    doGlide(
-                        this,
-                        binding.ivAddImage,
-                        selectedImage,
-                        scaleType = ImageView.ScaleType.CENTER
-                    )
+                    showLoading(getString(R.string.message_loading_convert_image))
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        imageFile = uriToFile(selectedImage, this)
+                        try {
+                            doGlide(
+                                this,
+                                binding.ivAddImage,
+                                selectedImage,
+                                scaleType = ImageView.ScaleType.CENTER
+                            )
+                            lifecycleScope.launch {
+                                whenStarted {
+                                    imageFile = reduceFileImage(imageFile!!)
+                                }
+                                dismissLoading()
+                            }
+                        } catch (e: Exception) {
+                            dismissLoading()
+                            showError(message = e.message, onClick = {
+                                imageFile = null
+                                binding.ivAddImage.apply {
+                                    setImageResource(R.drawable.default_add_image)
+                                    scaleType = null
+                                }
+                                dismissNotification()
+                            })
+                        }
+                    }, WAIT_FOR_2000)
                 }
                 else -> {}
             }
@@ -188,6 +235,7 @@ class AddStoryActivity : BaseActivity() {
                                 showInformation(
                                     message = getString(R.string.message_failed_get_permission),
                                     onClick = {
+                                        dismissNotification()
                                         onBackPressedDispatcher.onBackPressed()
                                     }
                                 )

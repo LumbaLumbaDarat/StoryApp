@@ -6,10 +6,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Matrix
-import android.graphics.PorterDuff
-import android.graphics.Typeface
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -42,10 +39,12 @@ import com.bumptech.glide.request.transition.Transition
 import com.harifrizki.storyapp.R
 import com.harifrizki.storyapp.data.remote.response.GeneralResponse
 import com.harifrizki.storyapp.module.errorpage.ConnectionErrorActivity
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -157,6 +156,41 @@ fun uriToFile(selectedImg: Uri, context: Context): File {
     return myFile
 }
 
+fun reduceFileImage(file: File): File {
+    val bitmap = BitmapFactory.decodeFile(file.path)
+
+    var compressQuality = 100
+    var streamLength: Int
+
+    do {
+        val bmpStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+        val bmpPicByteArray = bmpStream.toByteArray()
+        streamLength = bmpPicByteArray.size
+        compressQuality -= 5
+    } while (streamLength > 1000000)
+
+    bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+
+    return file
+}
+
+fun toRequestBody(value: String?, mediaType: String?): RequestBody {
+    return value?.toRequestBody(mediaType?.toMediaType())!!
+}
+
+fun toRequestBody(file: File?, mediaType: String?): RequestBody {
+    return file?.asRequestBody(mediaType?.toMediaType())!!
+}
+
+fun toMultipartBody(file: File?, name: String?, mediaType: String?): MultipartBody.Part {
+    return MultipartBody.Part.createFormData(
+        name!!,
+        file?.name,
+        toRequestBody(file, mediaType)
+    )
+}
+
 private val requestOptions =
     RequestOptions().centerCrop().placeholder(R.drawable.default_wait_image)
         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -207,30 +241,32 @@ fun doGlide(
     scaleType: ImageView.ScaleType? = ImageView.ScaleType.FIT_XY,
     imageError: Int? = R.drawable.default_wait_image
 ) {
-    Glide.with(context!!).applyDefaultRequestOptions(requestOptions)
-        .load(uri)
-        .error(imageError)
-        .listener(object : RequestListener<Drawable> {
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: Target<Drawable>?,
-                isFirstResource: Boolean
-            ): Boolean { return false }
+    imageView?.let {
+        Glide.with(context!!).applyDefaultRequestOptions(requestOptions)
+            .load(uri)
+            .error(imageError)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean { return false }
 
-            override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
-                target: Target<Drawable>?,
-                dataSource: DataSource?,
-                isFirstResource: Boolean
-            ): Boolean {
-                imageView?.apply {
-                    this.scaleType = scaleType
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    imageView?.apply {
+                        this.scaleType = scaleType
+                    }
+                    return false
                 }
-                return false
-            }
-        })
+            }).into(it)
+    }
 }
 
 fun doGlide(
