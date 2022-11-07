@@ -49,10 +49,21 @@ class RemoteDataSource : DataSource {
         )
     }
 
-    override fun getAllStories(loginResultResponse: LoginResultResponse?): LiveData<ApiResource<GetAllStoriesResponse>> {
+    override fun getAllStories(loginResultResponse: LoginResultResponse?, story: Story?): LiveData<ApiResource<GetAllStoriesResponse>> {
         return response(
             loginResultResponse?.token!!,
-            NetworkApi.connectToApi(loginResultResponse.token!!).getAllStories(),
+            NetworkApi.connectToApi(loginResultResponse.token!!).getAllStories(Story.jsonObject(story!!)),
+            GetAllStoriesResponse()
+        )
+    }
+
+    override fun getAllStoriesWithPaging(
+        loginResultResponse: LoginResultResponse?,
+        story: Story?
+    ): LiveData<ApiResource<GetAllStoriesResponse>> {
+        return response(
+            loginResultResponse?.token!!,
+            NetworkApi.connectToApi(loginResultResponse.token!!).getAllStoriesWitPaging(page = story?.page!!, size = story.size!!, location = story.location!!),
             GetAllStoriesResponse()
         )
     }

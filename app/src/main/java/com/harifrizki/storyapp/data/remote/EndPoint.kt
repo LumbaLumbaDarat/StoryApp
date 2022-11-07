@@ -22,7 +22,13 @@ interface EndPoint {
 
     @Headers("Content-Type: application/json")
     @GET(GET_ALL_STORIES)
-    fun getAllStories():
+    fun getAllStories(@Body jsonObject: JsonObject):
+            Call<GetAllStoriesResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET(GET_ALL_STORIES)
+    @Multipart
+    fun getAllStoriesWitPaging(@Part page: Int, @Part size: Int, @Part location: Int):
             Call<GetAllStoriesResponse>
 
     @Multipart

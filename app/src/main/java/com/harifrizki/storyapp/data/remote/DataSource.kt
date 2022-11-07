@@ -17,7 +17,10 @@ interface DataSource {
     fun login(login: Login?):
             LiveData<ApiResource<LoginResponse>>
 
-    fun getAllStories(loginResultResponse: LoginResultResponse?):
+    fun getAllStories(loginResultResponse: LoginResultResponse?, story: Story?):
+            LiveData<ApiResource<GetAllStoriesResponse>>
+
+    fun getAllStoriesWithPaging(loginResultResponse: LoginResultResponse?, story: Story?):
             LiveData<ApiResource<GetAllStoriesResponse>>
 
     fun addStory(loginResultResponse: LoginResultResponse?, story: Story?):

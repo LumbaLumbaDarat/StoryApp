@@ -75,8 +75,41 @@ data class Story(
     var photo: File? = null,
     @field:SerializedName("createdAt") var createdAt: String? = EMPTY_STRING,
     @field:SerializedName("lat") var lat: Float? = 0.0F,
-    @field:SerializedName("lon") var long: Float? = 0.0F
-) : Parcelable
+    @field:SerializedName("lon") var long: Float? = 0.0F,
+    @field:SerializedName("page") var page: Int? = 0,
+    @field:SerializedName("size") var size: Int? = 0,
+    @field:SerializedName("location") var location: Int? = 0,
+) : Parcelable {
+    companion object {
+        fun jsonObject(
+            story: Story
+        ): JsonObject {
+            return JsonObject().apply {
+                addProperty(story::page.name, story.page)
+                addProperty(story::size.name, story.size)
+                addProperty(story::location.name, story.location)
+            }
+        }
+
+        fun convertToStoryEntity(stories: ArrayList<Story>): ArrayList<StoryEntity> {
+            val storyEntities: ArrayList<StoryEntity> = ArrayList()
+            for (story in stories) {
+                storyEntities.add(
+                    StoryEntity(
+                        id = story.id!!,
+                        name = story.name,
+                        description = story.description,
+                        photoUrl = story.photoUrl,
+                        createdAt = story.createdAt,
+                        lat = story.lat,
+                        long = story.long
+                    )
+                )
+            }
+            return storyEntities
+        }
+    }
+}
 
 @Parcelize
 data class Menu(

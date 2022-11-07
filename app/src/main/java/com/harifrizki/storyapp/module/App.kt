@@ -35,9 +35,9 @@ class App : MultiDexApplication() {
     @ExperimentalCoroutinesApi
     @FlowPreview
     val viewModelModule = module {
-        viewModel { _ -> RegistrationViewModel(storyRepository = Injection.provideRepository()) }
-        viewModel { _ -> LoginViewModel(storyRepository = Injection.provideRepository()) }
-        viewModel { _ -> ListStoryViewModel(storyRepository = Injection.provideRepository()) }
-        viewModel { _ -> AddStoryViewModel(storyRepository = Injection.provideRepository()) }
+        viewModel { _ -> RegistrationViewModel(storyRepository = Injection.provideRepository(this@App)) }
+        viewModel { _ -> LoginViewModel(storyRepository = Injection.provideRepository(this@App)) }
+        viewModel { _ -> ListStoryViewModel(storyRepository = Injection.provideRepository(this@App)) }
+        viewModel { _ -> AddStoryViewModel(storyRepository = Injection.provideRepository(this@App)) }
     }
 }

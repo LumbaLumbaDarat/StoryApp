@@ -19,6 +19,7 @@ import com.harifrizki.storyapp.data.remote.response.LoginResultResponse
 import com.harifrizki.storyapp.databinding.ActivityListStoryBinding
 import com.harifrizki.storyapp.model.Story
 import com.harifrizki.storyapp.module.adapter.StoryAdapter
+import com.harifrizki.storyapp.module.adapter.StoryWithPagingAdapter
 import com.harifrizki.storyapp.module.authentication.login.LoginActivity
 import com.harifrizki.storyapp.module.base.BaseActivity
 import com.harifrizki.storyapp.module.story.addstory.AddStoryActivity
@@ -41,6 +42,7 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel by viewModel<ListStoryViewModel>()
     private var storyAdapter: StoryAdapter? = null
+    private var storyWithPagingAdapter: StoryWithPagingAdapter? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +103,12 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun story() {
         if (networkConnected()) {
-            userLogin?.let { viewModel.story(it).observe(this, this.story) }
+            userLogin?.let { userLogin ->
+                viewModel.storyWithPaging(userLogin, Story(page = 1, size = 10, location = 1))
+                    .observe(this) {
+                        storyWithPagingAdapter?.submitData(lifecycle, it)
+                    }
+            }
         }
     }
 
@@ -147,6 +154,7 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initializeStory() {
+        storyWithPagingAdapter = StoryWithPagingAdapter();
         storyAdapter = StoryAdapter(context = this).apply {
             onClickStory = { holder: StoryAdapter.HolderView?, story: Story? ->
                 val optionsCompat: ActivityOptionsCompat =
@@ -175,7 +183,7 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         binding.apply {
             rvListOfStory.apply {
                 layoutManager = LinearLayoutManager(this@ListStoryActivity)
-                adapter = storyAdapter
+                adapter = storyWithPagingAdapter
             }
             rvListOfStoryShimmer.apply {
                 layoutManager = LinearLayoutManager(this@ListStoryActivity)
