@@ -16,6 +16,7 @@ enum class MenuCode {
     MENU_NONE,
     MENU_CAMERA,
     MENU_GALLERY,
+    MENU_MAPS_STORY,
     MENU_ADD_STORY,
     MENU_SETTING_LANGUAGE
 }

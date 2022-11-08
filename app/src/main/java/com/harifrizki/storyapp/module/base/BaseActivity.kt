@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.harifrizki.storyapp.R
@@ -473,6 +474,16 @@ open class BaseActivity : AppCompatActivity() {
 
     fun mainMenus(): ArrayList<Menu> {
         val menus: ArrayList<Menu> = ArrayList()
+        menus.add(
+            Menu(
+                MENU_MAPS_STORY,
+                context?.getString(R.string.main_menu_maps_story),
+                R.drawable.ic_round_share_location_24,
+                true,
+                R.color.primary,
+                R.color.primary
+            )
+        )
         menus.add(
             Menu(
                 MENU_ADD_STORY,

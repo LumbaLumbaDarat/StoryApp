@@ -5,6 +5,7 @@ import com.harifrizki.storyapp.module.authentication.login.LoginViewModel
 import com.harifrizki.storyapp.module.authentication.registration.RegistrationViewModel
 import com.harifrizki.storyapp.module.story.addstory.AddStoryViewModel
 import com.harifrizki.storyapp.module.story.liststory.ListStoryViewModel
+import com.harifrizki.storyapp.module.story.mapsstory.StoryMapsViewModel
 import com.harifrizki.storyapp.utils.Injection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -39,5 +40,6 @@ class App : MultiDexApplication() {
         viewModel { _ -> LoginViewModel(storyRepository = Injection.provideRepository(this@App)) }
         viewModel { _ -> ListStoryViewModel(storyRepository = Injection.provideRepository(this@App)) }
         viewModel { _ -> AddStoryViewModel(storyRepository = Injection.provideRepository(this@App)) }
+        viewModel { _ -> StoryMapsViewModel(storyRepository = Injection.provideRepository(this@App)) }
     }
 }

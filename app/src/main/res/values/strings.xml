@@ -57,6 +57,7 @@
     <string name="message_loading_login">[Please wait]\nWe are [looking for], [Your Credential] data</string>
     <string name="message_loading_add_story">[Please wait]\nWe are [Add Your Story], to [Our Database]</string>
 
+    <string name="main_menu_maps_story">Story in Maps</string>
     <string name="main_menu_add_story">Add Story</string>
     <string name="main_menu_setting_language">Language</string>
 
@@ -83,4 +84,7 @@
     <string name="message_success_add_story">You have Successfully [Add New Story]</string>
 
     <string name="message_loading_convert_image">[Please Wait], We are [Compress Your Image]</string>
+
+    <string name="message_your_location">Your Location</string>
+    <string name="message_error_permission_location">You Need App Permission to Access Search Location</string>
 </resources>

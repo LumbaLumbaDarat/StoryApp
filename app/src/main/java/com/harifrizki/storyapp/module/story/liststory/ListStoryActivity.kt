@@ -24,7 +24,9 @@ import com.harifrizki.storyapp.module.authentication.login.LoginActivity
 import com.harifrizki.storyapp.module.base.BaseActivity
 import com.harifrizki.storyapp.module.story.addstory.AddStoryActivity
 import com.harifrizki.storyapp.module.story.detailstory.DetailStoryActivity
+import com.harifrizki.storyapp.module.story.mapsstory.StoryMapsActivity
 import com.harifrizki.storyapp.utils.*
+import com.harifrizki.storyapp.utils.MenuCode.MENU_MAPS_STORY
 import com.harifrizki.storyapp.utils.MenuCode.MENU_ADD_STORY
 import com.harifrizki.storyapp.utils.MenuCode.MENU_SETTING_LANGUAGE
 import com.harifrizki.storyapp.utils.ResponseStatus.*
@@ -205,6 +207,10 @@ class ListStoryActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             20,
             onClickMenu = {
                 when (it.menuCode) {
+                    MENU_MAPS_STORY -> {
+                        dismissOptionList()
+                        resultLauncher.launch(Intent(this, StoryMapsActivity::class.java))
+                    }
                     MENU_ADD_STORY -> {
                         dismissOptionList()
                         resultLauncher.launch(Intent(this, AddStoryActivity::class.java))
