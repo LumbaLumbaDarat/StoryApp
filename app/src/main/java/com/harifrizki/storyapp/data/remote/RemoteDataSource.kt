@@ -52,7 +52,7 @@ class RemoteDataSource : DataSource {
     override fun getAllStories(loginResultResponse: LoginResultResponse?, story: Story?): LiveData<ApiResource<GetAllStoriesResponse>> {
         return response(
             loginResultResponse?.token!!,
-            NetworkApi.connectToApi(loginResultResponse.token!!).getAllStories(Story.jsonObject(story!!)),
+            NetworkApi.connectToApi(loginResultResponse.token!!).getAllStories(page = story?.page, size = story?.size, location = story?.location),
             GetAllStoriesResponse()
         )
     }

@@ -51,7 +51,7 @@ class StoryRemoteMediator(
 
         try {
             val responseData = NetworkApi.connectToApi(loginResultResponse.token)
-                .getAllStories(Story.jsonObject(Story(page = page, size = state.config.pageSize, location = 0)))
+                .getAllStories(page = page, size = state.config.pageSize, location = 0)
 
             val endOfPaginationReached = responseData.execute().body()?.stories?.isEmpty()
 

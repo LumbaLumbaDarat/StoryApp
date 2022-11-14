@@ -70,7 +70,7 @@ class StoryMapsActivity : BaseActivity(), OnMapReadyCallback,
     private fun story() {
         if (networkConnected()) {
             userLogin?.let { userLogin ->
-                viewModel.story(userLogin, Story(location = 1))
+                viewModel.story(userLogin, Story(page = 1, size = 10, location = 1))
                     .observe(this) {
                         story
                     }
@@ -119,6 +119,7 @@ class StoryMapsActivity : BaseActivity(), OnMapReadyCallback,
     override fun onMapReady(p0: GoogleMap) {
         if (isNetworkConnected(this))
         {
+            story()
             mMap = p0
 
             mMap.uiSettings.isZoomControlsEnabled = true
